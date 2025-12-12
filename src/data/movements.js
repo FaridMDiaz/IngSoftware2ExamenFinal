@@ -58,3 +58,25 @@ export const movementsData = [
     date: '2025-12-08'
   }
 ];
+export class ChargebackMovement extends Movement {
+    constructor(data) {
+        super(data);
+        this.type = 'CHARGEBACK';
+    }
+    
+    getColor() {
+        return '#ff4444'; 
+    }
+    
+    getIcon() {
+        return '↩'; 
+    }
+    
+    netAmount() {
+        return -Math.abs(this.amount); 
+    }
+    
+    getDescription() {
+        return `Contracargo: ${this.name}`;
+    }
+}

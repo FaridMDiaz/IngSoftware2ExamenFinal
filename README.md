@@ -14,3 +14,33 @@ The React Compiler is not enabled on this template because of its impact on dev 
 ## Expanding the ESLint configuration
 
 If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+
+# Refactorización con Patrón Factory
+
+## Justificación
+
+### Problema identificado:
+El componente `MovementList.js` tenía un alto acoplamiento con las clases concretas de movimiento (`IncomeMovement`, `ExpenseMovement`, etc.), violando el principio de inversión de dependencias.
+
+### Solución implementada:
+Se implementó el patrón **Factory Method** combinado con un **Registry** para:
+
+1. **Reducir acoplamiento**: La UI ahora solo depende de la abstracción `MovementFactory` y la interfaz `IMovement`
+2. **Aumentar cohesión**: La lógica de creación se centralizó en el dominio
+3. **Cumplir OCP**: Se pueden agregar nuevos tipos sin modificar la UI
+
+### Beneficios:
+- **Mantenibilidad**: Cambios en las clases concretas no afectan la UI
+- **Extensibilidad**: Nuevos tipos se agregan solo en el dominio
+- **Testabilidad**: La fábrica puede mockearse fácilmente
+
+## Pasos para agregar un nuevo tipo (OCP):
+
+1. **Crear la nueva clase** en `src/domain/Movement.js`:
+```javascript
+export class NuevoMovement extends Movement {
+    constructor(data) { /* ... */ }
+    getColor() { /* ... */ }
+    getIcon() { /* ... */ }
+    netAmount() { /* ... */ }
+}
